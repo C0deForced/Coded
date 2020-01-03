@@ -1,4 +1,4 @@
-Aplist = {}
+reflist = {}
 Items_to_search = []
 while True:
     user = input("Enter the device info ")
@@ -6,7 +6,7 @@ while True:
         break
     elif user != '':
         user = user.split()
-        Aplist[(user[0])] = user[1]
+        reflist[(user[0])] = user[1]
     else:
         break
 
@@ -20,7 +20,7 @@ while True:
         break
 
 for key in Items_to_search:
-    x = Aplist.get(key)
+    x = reflist.get(key)
 
     print(key, x)
 else:
