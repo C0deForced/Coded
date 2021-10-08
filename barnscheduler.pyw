@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 #declairing the tkinter object
 main_window = Tk()
@@ -97,7 +98,7 @@ page = window_setup(main_window, "800x700", "Barn chart")
 
 
 page.note.add(page.tabframe, text="Base Schedule") 
-main_tree= main_treeview(page.tabframe, "time", "name", "location" )
+main_tree = main_treeview(page.tabframe, "time", "name", "location" )
 
 
 #setup the data input
@@ -129,8 +130,9 @@ for x in data_values:
 pop_menu = Menu(main_window, tearoff=0)
 
 pop_menu.add_command(label='add time', command=lambda: insert_pop())
-pop_menu.add_command(label='remove time')
+pop_menu.add_command(label='remove time', command=lambda: do_remove_value())
 pop_menu.add_command(label='FUCK!')
+
 
 def menu_pop(event):
     try:
@@ -138,17 +140,14 @@ def menu_pop(event):
     finally:
         pop_menu.grab_release()
 
+
 main_window.bind("<Button-3>", menu_pop)
-
-
-
 
 
 #print(main_tree.data_table.get_children())
 def do_value_update():
     main_tree.data_table.insert(parent='0', index='end', iid=16, text='', values=("8:10am", 'DJ', 'Ring'))
     main_tree.data_table.move('16', '0', '0')
-
 
 
 def insert_pop():
@@ -178,17 +177,31 @@ def insert_pop():
     close = Button(insert, text='ok', command=lambda:[block_val(), close_time_entry()])
     close.grid(row=3, sticky=W)
 
+
 def close_time_entry():
     insert.destroy()
- 
+
+
 def block_val():
     time_in = data_time_in.get()
     name_in = data_name_in.get()
     location_in = data_location_in.get()
     print(time_in, name_in, location_in)
 
+
+# Remove presently selected row of the tree view.
 def do_remove_value():
-    pass
+    answer = messagebox.askyesno(title='Confirmation', message='Are you sure you want to delete this list item?')
+    if answer:
+        # Define selected_items as the tree's currently selected item.
+        selected_items = main_tree.data_table.selection()
+        # For loop to delete each line of the selected row.
+        for selected_item in selected_items:
+            main_tree.data_table.delete(selected_item)
+        return
+    else:
+        print("List item not deleted.")
+
 
 def create_tab():
     name = data.name.get()
